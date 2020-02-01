@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="container">
-            <div class="card col-md-8 mx-auto">
+            <div class="card col-md-8 mx-auto mb-5">
                 <div class="card-body">
-                    <button class="btn btn-primary btn-block" @click="onGetQuotes">Bejegyzések lekérdezése</button>
-                    <hr>
-                    <app-quote v-for="quote in quotes" :qt="quote"></app-quote>
+                    <app-quote v-for="quote in quotes"
+                        :qt="quote"
+                        @quoteDeleted="onQuoteDeleted($event)"></app-quote>
                 </div>
             </div>
         </div>
@@ -29,7 +29,16 @@ export default {
                     }
                 )
                 .catch(error => console.log(error));
+        },
+        onQuoteDeleted(id) {
+            const position = this.quotes.findIndex((element) => {
+                return element.id == id;
+            });
+            this.quotes.splice(position, 1);
         }
+    },
+    beforeMount(){
+        this.onGetQuotes()
     },
     components: {
         'app-quote': Quote

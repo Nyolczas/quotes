@@ -1961,6 +1961,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1979,8 +1981,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['qt']
+  props: ['qt'],
+  data: function data() {
+    return {
+      editing: false,
+      editValue: this.qt.content
+    };
+  },
+  methods: {
+    onEdit: function onEdit() {
+      this.editing = true;
+      this.editValue = this.qt.content;
+    },
+    onDelete: function onDelete() {
+      this.$emit('quoteDeleted', this.qt.id);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('http://quotes.test/api/quote/' + this.qt.id).then(function (response) {
+        return console.log(response);
+      })["catch"](function (error) {
+        return console.log(response);
+      });
+    },
+    onUpdate: function onUpdate() {
+      this.editing = false;
+      this.qt.content = this.editValue;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put('http://quotes.test/api/quote/' + this.qt.id, {
+        content: this.editValue
+      }).then(function (response) {
+        return console.log(response);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    onCancel: function onCancel() {
+      this.editing = false;
+    }
+  }
 });
 
 /***/ }),
@@ -2027,7 +2068,16 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         return console.log(error);
       });
+    },
+    onQuoteDeleted: function onQuoteDeleted(id) {
+      var position = this.quotes.findIndex(function (element) {
+        return element.id == id;
+      });
+      this.quotes.splice(position, 1);
     }
+  },
+  beforeMount: function beforeMount() {
+    this.onGetQuotes();
   },
   components: {
     'app-quote': _qoute__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -37534,33 +37584,69 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "panel panel-default" }, [
-    _c("div", { staticClass: "panel-body" }, [
-      _vm._v("\n        " + _vm._s(_vm.qt.content) + "\n    ")
+  return _c("div", { staticClass: "card card-default my-3" }, [
+    _c("div", { staticClass: "card-body" }, [
+      _vm.editing
+        ? _c("div", [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.editValue,
+                  expression: "editValue"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "exampleTextarea", rows: "3" },
+              domProps: { value: _vm.editValue },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.editValue = $event.target.value
+                }
+              }
+            })
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.editing ? _c("h5", [_vm._v(_vm._s(_vm.qt.content))]) : _vm._e()
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "panel-footer" }, [
-      _c("div", [
-        _c("input", { attrs: { type: "text" } }),
-        _vm._v(" "),
-        _c("a", { attrs: { href: "" }, on: { click: _vm.onUpdate } }, [
-          _vm._v("Mentés")
-        ]),
-        _vm._v(" "),
-        _c("a", { attrs: { href: "" }, on: { click: _vm.onCancel } }, [
-          _vm._v("Mégse")
-        ])
-      ]),
+    _c("div", { staticClass: "card-footer" }, [
+      _vm.editing
+        ? _c("div", { staticClass: "d-flex justify-content-around" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-success", on: { click: _vm.onUpdate } },
+              [_vm._v("Mentés")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-secondary", on: { click: _vm.onCancel } },
+              [_vm._v("Mégse")]
+            )
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("div", [
-        _c("a", { attrs: { href: "" }, on: { click: _vm.onEdit } }, [
-          _vm._v("Szerkesztés")
-        ]),
-        _vm._v(" "),
-        _c("a", { attrs: { href: "" }, on: { click: _vm.onDelete } }, [
-          _vm._v("Törlés")
-        ])
-      ])
+      !_vm.editing
+        ? _c("div", { staticClass: "d-flex justify-content-around" }, [
+            _c(
+              "button",
+              { staticClass: "btn btn-warning", on: { click: _vm.onEdit } },
+              [_vm._v("Szerkesztés")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-danger", on: { click: _vm.onDelete } },
+              [_vm._v("Törlés")]
+            )
+          ])
+        : _vm._e()
     ])
   ])
 }
@@ -37588,27 +37674,21 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "card col-md-8 mx-auto" }, [
+      _c("div", { staticClass: "card col-md-8 mx-auto mb-5" }, [
         _c(
           "div",
           { staticClass: "card-body" },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary btn-block",
-                on: { click: _vm.onGetQuotes }
-              },
-              [_vm._v("Bejegyzések lekérdezése")]
-            ),
-            _vm._v(" "),
-            _c("hr"),
-            _vm._v(" "),
-            _vm._l(_vm.quotes, function(quote) {
-              return _c("app-quote", { attrs: { qt: quote } })
+          _vm._l(_vm.quotes, function(quote) {
+            return _c("app-quote", {
+              attrs: { qt: quote },
+              on: {
+                quoteDeleted: function($event) {
+                  return _vm.onQuoteDeleted($event)
+                }
+              }
             })
-          ],
-          2
+          }),
+          1
         )
       ])
     ])
