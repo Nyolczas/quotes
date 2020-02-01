@@ -1,8 +1,14 @@
 <template>
     <div>
-        <button class="btn btn-primary" @click="onGetQuotes">Bejegyzések lekérdezése</button>
-        <hr>
-        <app-quote v-for="quote in quotes" v-bind:key="quote"></app-quote>
+        <div class="container">
+            <div class="card col-md-8 mx-auto">
+                <div class="card-body">
+                    <button class="btn btn-primary btn-block" @click="onGetQuotes">Bejegyzések lekérdezése</button>
+                    <hr>
+                    <app-quote v-for="quote in quotes" :qt="quote"></app-quote>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -19,7 +25,7 @@ export default {
             axios.get('http://quotes.test/api/quotes')
                 .then(
                     response => {
-                        console.log(response);
+                        this.quotes = response.data.quotes;
                     }
                 )
                 .catch(error => console.log(error));

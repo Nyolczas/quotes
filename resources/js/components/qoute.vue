@@ -18,6 +18,6 @@
 </template>
 <script>
 export default {
-    props: ['key']
+    props: ['qt']
 }
 </script>

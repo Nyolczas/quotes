@@ -1980,7 +1980,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['key']
+  props: ['qt']
 });
 
 /***/ }),
@@ -2004,6 +2004,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2014,8 +2020,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onGetQuotes: function onGetQuotes() {
+      var _this = this;
+
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('http://quotes.test/api/quotes').then(function (response) {
-        console.log(response);
+        _this.quotes = response.data.quotes;
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -37398,17 +37406,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "col" },
-      [
-        _c("router-link", { attrs: { to: "/" } }, [_vm._v("Bejegyzések")]),
-        _vm._v(" "),
-        _c("router-link", { attrs: { to: "/new" } }, [_vm._v("Új bejegyzés")])
-      ],
-      1
-    ),
+  return _c("div", { staticClass: "container" }, [
+    _c("ul", { staticClass: "nav col-8 mx-auto" }, [
+      _c(
+        "li",
+        { staticClass: "nav-item" },
+        [
+          _c("router-link", { staticClass: "nav-link", attrs: { to: "/" } }, [
+            _vm._v("Bejegyzések")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "li",
+        { staticClass: "nav-item" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "nav-link", attrs: { to: "/new" } },
+            [_vm._v("Új bejegyzés")]
+          )
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "mt-5" }, [_c("router-view")], 1)
   ])
@@ -37563,23 +37586,33 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", on: { click: _vm.onGetQuotes } },
-        [_vm._v("Bejegyzések lekérdezése")]
-      ),
-      _vm._v(" "),
-      _c("hr"),
-      _vm._v(" "),
-      _vm._l(_vm.quotes, function(quote) {
-        return _c("app-quote", { key: quote })
-      })
-    ],
-    2
-  )
+  return _c("div", [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "card col-md-8 mx-auto" }, [
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block",
+                on: { click: _vm.onGetQuotes }
+              },
+              [_vm._v("Bejegyzések lekérdezése")]
+            ),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._l(_vm.quotes, function(quote) {
+              return _c("app-quote", { attrs: { qt: quote } })
+            })
+          ],
+          2
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
