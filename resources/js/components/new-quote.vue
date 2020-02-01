@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -27,7 +28,13 @@ export default {
     },
     methods: {
         onSubmitted() {
-
+            axios.post('http://quotes.test/api/quote',
+                 {content: this.quoteContent})
+                 .then(
+                     (response) => console.log(response)
+                 ).catch(
+                     (error) => console.log(error)
+                 );
         }
     }
 }

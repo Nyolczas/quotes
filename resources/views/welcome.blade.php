@@ -25,8 +25,8 @@
             @endif
 
             <div class="content">
-                <div id="app" class="mt-5">
-                    <new-quote></new-quote>
+                <div id="app">
+                    <app></app>
                 </div>
             </div>
         </div>
